@@ -1,0 +1,31 @@
+version: "3.3"
+services:
+   userapi:
+     build: .
+     environment:
+       HOST: :9001
+       DB_HOST: pg
+       DB_USER: postgres
+       DB_PASS: example
+       DB_NAME: userapi
+     ports:
+       - "9001:9001"
+     networks:
+       - pgnet
+   pg:
+    image: postgres:11-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: userapi
+      POSTGRES_USER: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    networks:
+      - pgnet
+volumes:
+  pg-data:
+networks:
+  pgnet:
